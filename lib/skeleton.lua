@@ -4,6 +4,7 @@
 --- Maps to bboy-analytics joint indexing (experiments/components/panel.py).
 
 local Vec = require("lib.vector")
+local Theme = require("shell.theme")
 
 local Skeleton = {}
 Skeleton.__index = Skeleton
@@ -229,9 +230,9 @@ function Skeleton:draw(highlight_chain)
             local c = self.bone_colors[bone[1] .. "-" .. bone[2]]
             love.graphics.setColor(c[1], c[2], c[3], c[4] or 0.8)
         elseif in_chain then
-            love.graphics.setColor(1, 1, 1, 0.9)
+            love.graphics.setColor(unpack(Theme.colors.bone_highlight))
         else
-            love.graphics.setColor(1, 1, 1, 0.25)
+            love.graphics.setColor(unpack(Theme.colors.bone))
         end
 
         love.graphics.setLineWidth(in_chain and (self.bone_width + 1) or self.bone_width)
@@ -250,13 +251,13 @@ function Skeleton:draw(highlight_chain)
             local c = self.joint_colors[i]
             love.graphics.setColor(c[1], c[2], c[3], c[4] or 1)
         elseif is_selected then
-            love.graphics.setColor(0.490, 0.827, 0.988, 1)  -- accent
+            love.graphics.setColor(unpack(Theme.colors.joint_selected))
         elseif in_chain then
-            love.graphics.setColor(1, 1, 1, 0.9)
+            love.graphics.setColor(unpack(Theme.colors.bone_highlight))
         elseif is_hovered then
-            love.graphics.setColor(1, 1, 1, 0.6)
+            love.graphics.setColor(unpack(Theme.colors.joint_hover))
         else
-            love.graphics.setColor(1, 1, 1, 0.35)
+            love.graphics.setColor(unpack(Theme.colors.joint))
         end
 
         local r = self.joint_radius
@@ -268,13 +269,13 @@ function Skeleton:draw(highlight_chain)
 
         -- Joint ring
         if is_selected or is_hovered then
-            love.graphics.setColor(1, 1, 1, 0.3)
+            love.graphics.setColor(unpack(Theme.colors.text_muted))
             love.graphics.circle("line", jx, jy, r + 3)
         end
 
         -- Labels
         if self.show_labels and (is_selected or is_hovered or self.show_indices) then
-            love.graphics.setColor(1, 1, 1, 0.8)
+            love.graphics.setColor(unpack(Theme.colors.text))
             local name = Skeleton.JOINT_NAMES[i]
             if self.show_indices then name = i .. ": " .. name end
             love.graphics.print(name, jx + r + 6, jy - 6)

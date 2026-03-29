@@ -69,20 +69,20 @@ function Widgets.slider(x, y, w, value, label, opts)
 
     -- Draw label
     if label then
-        love.graphics.setColor(1, 1, 1, 0.6)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print(label, x, y)
     end
 
     -- Draw value
-    love.graphics.setColor(1, 1, 1, 0.8)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().mono)
     local val_str = string.format(format, value)
     local val_w = Theme.fonts().mono:getWidth(val_str)
     love.graphics.print(val_str, x + w - val_w, y)
 
     -- Track background
-    love.graphics.setColor(1, 1, 1, 0.08)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.rectangle("fill", x, track_y, w, track_h, 2, 2)
 
     -- Track fill
@@ -122,18 +122,22 @@ function Widgets.toggle(x, y, value, label, color)
     if value then
         love.graphics.setColor(color[1], color[2], color[3], 0.4)
     else
-        love.graphics.setColor(1, 1, 1, 0.1)
+        love.graphics.setColor(unpack(Theme.colors.border))
     end
     love.graphics.rectangle("fill", x, y, w, h, r, r)
 
     -- Draw knob
     local knob_x = value and (x + w - r) or (x + r)
-    love.graphics.setColor(1, 1, 1, value and 0.95 or 0.4)
+    if value then
+        love.graphics.setColor(unpack(Theme.colors.text))
+    else
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
+    end
     love.graphics.circle("fill", knob_x, y + r, r - 3)
 
     -- Label
     if label then
-        love.graphics.setColor(1, 1, 1, 0.6)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print(label, x + w + 8, y + 3)
     end
@@ -169,11 +173,11 @@ function Widgets.button(x, y, text, opts)
 
     -- Background
     if disabled then
-        love.graphics.setColor(1, 1, 1, 0.04)
+        love.graphics.setColor(unpack(Theme.colors.border))
     elseif hovering then
         love.graphics.setColor(color[1], color[2], color[3], 0.15)
     else
-        love.graphics.setColor(1, 1, 1, 0.06)
+        love.graphics.setColor(unpack(Theme.colors.border))
     end
     Theme.roundRect("fill", x, y, w, h, Theme.radius.sm)
 
@@ -181,15 +185,19 @@ function Widgets.button(x, y, text, opts)
     if hovering then
         love.graphics.setColor(color[1], color[2], color[3], 0.3)
     else
-        love.graphics.setColor(1, 1, 1, 0.08)
+        love.graphics.setColor(unpack(Theme.colors.border))
     end
     Theme.roundRect("line", x, y, w, h, Theme.radius.sm)
 
     -- Text
     if disabled then
-        love.graphics.setColor(1, 1, 1, 0.2)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
     else
-        love.graphics.setColor(1, 1, 1, hovering and 0.9 or 0.6)
+        if hovering then
+            love.graphics.setColor(unpack(Theme.colors.text))
+        else
+            love.graphics.setColor(unpack(Theme.colors.text_dim))
+        end
     end
     love.graphics.setFont(font)
     love.graphics.print(text, x + (w - tw) / 2, y + (h - font:getHeight()) / 2)

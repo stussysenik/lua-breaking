@@ -10,15 +10,17 @@ local Physics = {}
 Physics.G = 9.81
 
 --- Kinetic energy of a set of velocity vectors
---- K = Σ ||v_j||²
+--- K = (1/2) * Σ m_j * ||v_j||²
 --- @param velocities table Array of Vec objects
+--- @param mass number? Mass per joint (default 1)
 --- @return number Total kinetic energy
-function Physics.kineticEnergy(velocities)
+function Physics.kineticEnergy(velocities, mass)
+    mass = mass or 1
     local sum = 0
     for _, v in ipairs(velocities) do
         sum = sum + v:len2()
     end
-    return sum
+    return 0.5 * mass * sum
 end
 
 --- Center of mass from joint positions (uniform mass assumed)
@@ -124,7 +126,7 @@ function Physics.supportPolygon(contacts)
             local b = hull[#hull]
             -- Cross product to check turn direction
             local cross = (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x)
-            if cross <= 0 then
+            if cross < 0 then
                 table.remove(hull)
             else
                 break

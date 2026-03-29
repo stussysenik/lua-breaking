@@ -129,6 +129,13 @@ function love.keypressed(key)
         return
     end
 
+    -- T toggles light/dark mode globally (works everywhere)
+    if key == "t" then
+        Theme.toggleMode()
+        love.graphics.setBackgroundColor(unpack(Theme.colors.bg))
+        return
+    end
+
     -- Pass to active section or graph
     if graph.active_section then
         if graph.active_section.keypressed then

@@ -55,8 +55,8 @@ local selected_contact = nil
 local field_strength_display = 0
 local force_between_display = 0
 
---- Arrow cache to avoid recomputing every frame
-local arrow_cache = {}
+--- Canvas cache for expensive field rendering
+local field_canvas = nil
 local cache_dirty = true
 
 --- Compute the force field at a point from all contacts
@@ -170,37 +170,46 @@ function Section:draw()
     Draw.titleBar(Section.meta.title, Section.meta.layer, Section.meta.id)
 
     -- Field area background
-    love.graphics.setColor(0.03, 0.03, 0.05, 1)
+    love.graphics.setColor(unpack(Theme.colors.bg))
     Theme.roundRect("fill", field_x, field_y, field_w, field_h, Theme.radius.lg)
-    love.graphics.setColor(1, 1, 1, 0.04)
+    love.graphics.setColor(unpack(Theme.colors.border))
     Theme.roundRect("line", field_x, field_y, field_w, field_h, Theme.radius.lg)
 
     -- Dot grid inside field
-    Draw.dotGrid(field_x, field_y, field_w, field_h, grid_spacing, 0.5, {1, 1, 1, 0.03})
+    Draw.dotGrid(field_x, field_y, field_w, field_h, grid_spacing, 0.5, Theme.colors.grid_dot)
 
-    -- Draw equipotential lines
-    if show_equipotential then
-        self:drawEquipotential()
+    -- Render expensive field computations to a cached Canvas
+    if cache_dirty or not field_canvas then
+        local cw = math.floor(field_w)
+        local ch = math.floor(field_h)
+        if not field_canvas or field_canvas:getWidth() ~= cw or field_canvas:getHeight() ~= ch then
+            field_canvas = love.graphics.newCanvas(cw, ch)
+        end
+
+        love.graphics.setCanvas(field_canvas)
+        love.graphics.clear(0, 0, 0, 0)
+        love.graphics.push()
+        love.graphics.translate(-field_x, -field_y)
+
+        if show_equipotential then self:drawEquipotential() end
+        if show_magnitude then self:drawMagnitudeField() end
+        self:drawVectorField()
+        if show_field_lines then self:drawFieldLines() end
+
+        love.graphics.pop()
+        love.graphics.setCanvas()
+        cache_dirty = false
     end
 
-    -- Draw magnitude heatmap
-    if show_magnitude then
-        self:drawMagnitudeField()
-    end
-
-    -- Draw vector field
-    self:drawVectorField()
-
-    -- Draw field lines (streamlines from contacts)
-    if show_field_lines then
-        self:drawFieldLines()
-    end
+    -- Draw cached field
+    love.graphics.setColor(unpack(Theme.colors.text))
+    love.graphics.draw(field_canvas, field_x, field_y)
 
     -- Draw contact points
     self:drawContacts()
 
     -- Field info overlay (top-left of field)
-    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().mono)
     love.graphics.print(
         string.format("Field strength: %.4f N/C", field_strength_display),
@@ -362,7 +371,7 @@ function Section:drawSidebar(sw, sh)
     -- Contact panels
     for i, c in ipairs(contacts) do
         -- Contact card
-        love.graphics.setColor(0.06, 0.06, 0.09, 0.95)
+        love.graphics.setColor(unpack(Theme.colors.panel_bg))
         Theme.roundRect("fill", sidebar_x, y, sidebar_w, 70, Theme.radius.md)
         love.graphics.setColor(c.color[1], c.color[2], c.color[3], 0.15)
         Theme.roundRect("line", sidebar_x, y, sidebar_w, 70, Theme.radius.md)
@@ -372,11 +381,11 @@ function Section:drawSidebar(sw, sh)
         love.graphics.rectangle("fill", sidebar_x, y + 8, 3, 54, 1, 1)
 
         -- Name & position
-        love.graphics.setColor(1, 1, 1, 0.9)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(Theme.fonts().body)
         love.graphics.print(c.name, sidebar_x + 14, y + 8)
 
-        love.graphics.setColor(1, 1, 1, 0.4)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print(
             string.format("Position: (%.0f, %.0f)", c.x, c.y),
@@ -395,7 +404,7 @@ function Section:drawSidebar(sw, sh)
         end
 
         -- Unit label
-        love.graphics.setColor(1, 1, 1, 0.3)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print("C", sidebar_x + sidebar_w - 20, y + 42)
 
@@ -454,25 +463,25 @@ function Section:drawSidebar(sw, sh)
         local c1, c2 = contacts[1], contacts[2]
         local force, dist = forceBetween(c1, c2)
 
-        love.graphics.setColor(1, 1, 1, 0.08)
+        love.graphics.setColor(unpack(Theme.colors.border))
         Theme.roundRect("fill", sidebar_x, y, sidebar_w, 180, Theme.radius.lg)
 
-        love.graphics.setColor(1, 1, 1, 0.9)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(Theme.fonts().heading)
         love.graphics.print("Force Calculations", sidebar_x + 14, y + 12)
 
         love.graphics.setFont(Theme.fonts().small)
-        love.graphics.setColor(1, 1, 1, 0.6)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
 
         local cy_text = y + 40
         love.graphics.print(string.format("%s ↔ %s:", c1.name, c2.name), sidebar_x + 14, cy_text)
-        love.graphics.setColor(1, 1, 1, 0.9)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(Theme.fonts().mono)
         love.graphics.print(string.format("%.2e N", force), sidebar_x + 120, cy_text)
         love.graphics.print(string.format("(%.1f px)", dist), sidebar_x + sidebar_w - 80, cy_text)
 
         cy_text = cy_text + 24
-        love.graphics.setColor(1, 1, 1, 0.4)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print(string.format("q1: %.1f C", c1.strength), sidebar_x + 14, cy_text)
         love.graphics.print(string.format("q2: %.1f C", c2.strength), sidebar_x + 120, cy_text)
@@ -489,7 +498,7 @@ function Section:drawSidebar(sw, sh)
 
         -- Formula
         cy_text = cy_text + 24
-        love.graphics.setColor(1, 1, 1, 0.6)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(Theme.fonts().mono)
         love.graphics.print("F = k|q1 * q2| / d²", sidebar_x + 14, cy_text)
     end

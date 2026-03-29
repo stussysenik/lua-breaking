@@ -193,7 +193,7 @@ function Graph:draw()
         local tx = to.x + to.w / 2
         local ty = to.y
 
-        love.graphics.setColor(1, 1, 1, 0.06)
+        love.graphics.setColor(unpack(Theme.colors.border))
         love.graphics.setLineWidth(1.5)
 
         -- Bezier curve
@@ -210,9 +210,9 @@ function Graph:draw()
 
         -- Node background
         if is_hovered then
-            love.graphics.setColor(layer_color[1], layer_color[2], layer_color[3], 0.12)
+            love.graphics.setColor(layer_color[1], layer_color[2], layer_color[3], Theme.colors.node_hover)
         else
-            love.graphics.setColor(0.06, 0.06, 0.09, 0.9)
+            love.graphics.setColor(unpack(Theme.colors.node_bg))
         end
         Theme.roundRect("fill", node.x, node.y, node.w, node.h, Theme.radius.lg)
 
@@ -292,15 +292,15 @@ end
 function Graph:drawTitle(sw, sh)
     -- Title
     love.graphics.setFont(Theme.fonts().title)
-    love.graphics.setColor(1, 1, 1, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.print("lua-breaking", 24, 16)
 
     -- Subtitle
     love.graphics.setFont(Theme.fonts().body)
-    love.graphics.setColor(1, 1, 1, 0.35)
-    love.graphics.print("Breakdancing Physics — Explorable Explanations", 24, 46)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
+    love.graphics.print("Breakdancing Physics - Explorable Explanations", 24, 46)
 
-    -- Stats
+    -- Stats + theme toggle hint
     local section_count = 0
     local visited_count = 0
     for id in pairs(self.nodes) do
@@ -309,10 +309,10 @@ function Graph:drawTitle(sw, sh)
     end
 
     love.graphics.setFont(Theme.fonts().small)
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.print(
-        string.format("%d / %d sections explored", visited_count, section_count),
-        sw - 200, 24
+        string.format("%d / %d sections explored    T toggle theme", visited_count, section_count),
+        sw - 300, 24
     )
 end
 
@@ -327,7 +327,7 @@ function Graph:drawLegend(sw, sh)
         love.graphics.setColor(color[1], color[2], color[3], 0.7)
         love.graphics.circle("fill", x, legend_y, 5)
 
-        love.graphics.setColor(1, 1, 1, 0.4)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print(labels[i], x + 10, legend_y - 6)
 

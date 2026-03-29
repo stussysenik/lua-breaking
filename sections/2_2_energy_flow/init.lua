@@ -1,5 +1,5 @@
 --- Section 2.2: Kinetic Energy Flow
---- K(t) = Σ_j ||v_j(t)||² visualized as flowing heat through skeleton.
+--- K(t) = (1/2) * m * Sigma ||v_j(t)||^2 visualized as flowing heat through skeleton.
 --- High-energy limbs glow. Bar chart per body part. Energy timeline below.
 ---
 --- Research bridge: experiments/components/energy_flow.py
@@ -136,7 +136,7 @@ function Section:draw()
     self:drawSidebar(sw, sh)
 
     -- Formula
-    Draw.formula("K(t) = Σ_j ||v_j(t)||²", 20, sh - 40)
+    Draw.formula("K(t) = (1/2) * m * Sigma ||v_j(t)||^2", 20, sh - 40)
 end
 
 function Section:drawEnergyTimeline(sw, sh)
@@ -146,7 +146,7 @@ function Section:drawEnergyTimeline(sw, sh)
     local h = 80
 
     -- Background
-    love.graphics.setColor(0.05, 0.05, 0.08, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.bg_surface))
     Theme.roundRect("fill", x, y, w, h, Theme.radius.md)
 
     -- Draw energy curves for each body part
@@ -178,11 +178,11 @@ function Section:drawEnergyTimeline(sw, sh)
     -- Playhead
     local progress = time / total_time
     local px = x + 4 + (w - 8) * progress
-    love.graphics.setColor(1, 1, 1, 0.8)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.line(px, y + 4, px, y + h - 4)
 
     -- Total energy
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.print(
         string.format("K(t) = %.2f", totalEnergy(time)),
@@ -198,7 +198,7 @@ function Section:drawSidebar(sw, sh)
     local y = 80
 
     -- Bar chart: energy per body part
-    love.graphics.setColor(1, 1, 1, 0.7)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().heading)
     love.graphics.print("Energy by Body Part", sidebar_x, y)
     y = y + 30
@@ -220,12 +220,12 @@ function Section:drawSidebar(sw, sh)
         local bar_w = energy * bar_max_w
 
         -- Label
-        love.graphics.setColor(1, 1, 1, 0.5)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print(label, sidebar_x, y + 3)
 
         -- Bar background
-        love.graphics.setColor(1, 1, 1, 0.04)
+        love.graphics.setColor(unpack(Theme.colors.border))
         love.graphics.rectangle("fill", sidebar_x + 80, y, bar_max_w, bar_h, 3, 3)
 
         -- Bar fill
@@ -233,7 +233,7 @@ function Section:drawSidebar(sw, sh)
         love.graphics.rectangle("fill", sidebar_x + 80, y, bar_w, bar_h, 3, 3)
 
         -- Value
-        love.graphics.setColor(1, 1, 1, 0.7)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(Theme.fonts().mono)
         love.graphics.print(string.format("%.2f", energy), sidebar_x + 80 + bar_max_w + 8, y + 2)
 
@@ -242,11 +242,11 @@ function Section:drawSidebar(sw, sh)
 
     -- Total
     y = y + 8
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.line(sidebar_x + 80, y, sidebar_x + 80 + bar_max_w, y)
     y = y + 8
 
-    love.graphics.setColor(1, 1, 1, 0.7)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().body)
     love.graphics.print("Total K(t)", sidebar_x, y)
     love.graphics.setFont(Theme.fonts().mono)
@@ -260,7 +260,7 @@ function Section:drawSidebar(sw, sh)
 
     -- Teaching
     y = sh - 200
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.printf(
         "Kinetic energy K(t) is the sum of squared velocities across all joints. " ..

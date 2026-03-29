@@ -237,7 +237,6 @@ end
 
 function Section:update(dt)
     anim_time = anim_time + dt
-    Widgets.beginFrame()
 
     -- Recalculate mu for current tau (lightweight: single pearson call)
     mu_value = correlation_at_tau(tau_value)
@@ -404,7 +403,7 @@ function Section:drawSignalGraph(title, samples, original, gx, gy, gw, gh, color
     love.graphics.setLineWidth(1)
 
     -- Zero line
-    love.graphics.setColor(1, 1, 1, 0.05)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.line(dx, dy + dh, dx + dw, dy + dh)
 end
 
@@ -425,7 +424,7 @@ function Section:drawCorrelationGraph(gx, gy, gw, gh)
 
     -- Title
     love.graphics.setFont(fonts.small)
-    love.graphics.setColor(1, 1, 1, 0.6)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.print("Cross-Correlation  corr(M, H(\xCF\x84))", gx + 10, gy + 4)
 
     -- Drawing area
@@ -450,7 +449,7 @@ function Section:drawCorrelationGraph(gx, gy, gw, gh)
     -- Horizontal zero-correlation line
     local zero_y = dy + dh - (0 - r_min) / (r_max - r_min) * dh
     if zero_y >= dy and zero_y <= dy + dh then
-        love.graphics.setColor(1, 1, 1, 0.06)
+        love.graphics.setColor(unpack(Theme.colors.border))
         love.graphics.line(dx, zero_y, dx + dw, zero_y)
     end
 
@@ -533,7 +532,7 @@ function Section:drawCorrelationGraph(gx, gy, gw, gh)
 
     -- Axis labels
     love.graphics.setFont(fonts.small)
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.print(string.format("%.1fs", -MAX_TAU), dx, dy + dh + 2)
     local right_label = string.format("+%.1fs", MAX_TAU)
     love.graphics.print(right_label, dx + dw - fonts.small:getWidth(right_label), dy + dh + 2)
@@ -557,7 +556,7 @@ function Section:drawSidebar(sw, sh)
     Theme.roundRect("fill", sidebar_x, y, sidebar_w, 80, Theme.radius.lg)
     love.graphics.setColor(grade_color[1], grade_color[2], grade_color[3], 0.15)
     Theme.roundRect("fill", sidebar_x, y, sidebar_w, 80, Theme.radius.lg)
-    love.graphics.setColor(1, 1, 1, 0.06)
+    love.graphics.setColor(unpack(Theme.colors.border))
     Theme.roundRect("line", sidebar_x, y, sidebar_w, 80, Theme.radius.lg)
 
     -- Grade badge
@@ -567,13 +566,13 @@ function Section:drawSidebar(sw, sh)
 
     -- Mu value
     love.graphics.setFont(fonts.heading)
-    love.graphics.setColor(1, 1, 1, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.text))
     local mu_str = string.format("\xCE\xBC = %.4f", mu_value)
     love.graphics.print(mu_str, sidebar_x + 50, y + 12)
 
     -- Subtitle
     love.graphics.setFont(fonts.small)
-    love.graphics.setColor(1, 1, 1, 0.4)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.print("current cross-correlation", sidebar_x + 50, y + 34)
 
     -- Optimal mu
@@ -619,11 +618,11 @@ function Section:drawSidebar(sw, sh)
     y = y + 60
 
     -- ── Educational explanation ──
-    love.graphics.setColor(1, 1, 1, 0.06)
+    love.graphics.setColor(unpack(Theme.colors.border))
     Theme.roundRect("fill", sidebar_x, y, sidebar_w, sh - y - 56, Theme.radius.md)
 
     love.graphics.setFont(fonts.small)
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.printf(
         "CROSS-CORRELATION\n\n" ..
         "Cross-correlation measures how similar two signals are as a " ..

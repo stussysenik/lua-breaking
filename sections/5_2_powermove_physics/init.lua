@@ -175,7 +175,7 @@ local function wm_draw(cx, cy, sim_r)
     end
 
     -- Ground contact arc (the back/shoulders rolling)
-    love.graphics.setColor(1, 1, 1, 0.06)
+    love.graphics.setColor(unpack(Theme.colors.border))
     dashedCircle(cx, cy, sim_r * 0.25, 16, 1)
 
     -- Torso (central disk)
@@ -223,15 +223,15 @@ local function wm_draw(cx, cy, sim_r)
     rotationArrow(cx, cy, pixel_r + 18, wm.angle, math.pi * 0.6, 8, 2)
 
     -- Center dot
-    love.graphics.setColor(1, 1, 1, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.circle("fill", cx, cy, 3)
 
     -- Radius line annotation
-    love.graphics.setColor(1, 1, 1, 0.2)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setLineWidth(1)
     local ann_a = wm.angle + math.pi / 4  -- between first two limbs
     love.graphics.line(cx, cy, cx + math.cos(ann_a) * pixel_r, cy + math.sin(ann_a) * pixel_r)
-    love.graphics.setColor(1, 1, 1, 0.35)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(fonts.small)
     local mid_x = cx + math.cos(ann_a) * pixel_r * 0.5
     local mid_y = cy + math.sin(ann_a) * pixel_r * 0.5
@@ -294,7 +294,7 @@ local function fl_draw(cx, cy, sim_r)
     local spread_offset = lerp(0.1, math.pi * 0.45, fl.leg_spread)
 
     -- Orbit circle
-    love.graphics.setColor(1, 1, 1, 0.05)
+    love.graphics.setColor(unpack(Theme.colors.border))
     dashedCircle(cx, cy, pixel_r, 32, 1)
 
     -- Trail: left leg (amber)
@@ -313,12 +313,12 @@ local function fl_draw(cx, cy, sim_r)
     end
 
     -- Pivot point (hands)
-    love.graphics.setColor(1, 1, 1, 0.12)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.circle("fill", cx, cy, 14)
-    love.graphics.setColor(1, 1, 1, 0.4)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.circle("line", cx, cy, 14)
     love.graphics.setFont(fonts.small)
-    love.graphics.setColor(1, 1, 1, 0.4)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.print("PIVOT", cx - 16, cy + 16)
 
     -- Torso line (from pivot toward "head" direction, opposite to average leg direction)
@@ -377,11 +377,11 @@ local function fl_draw(cx, cy, sim_r)
     rotationArrow(cx, cy, pixel_r + 16, fl.angle - 0.3, math.pi * 0.5, 7, 1.5)
 
     -- Radius annotation
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setLineWidth(1)
     local ann_a = fl.angle
     love.graphics.line(cx, cy, cx + math.cos(ann_a) * pixel_r, cy + math.sin(ann_a) * pixel_r)
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(fonts.small)
     love.graphics.print(string.format("r=%.2fm", r_eff),
         cx + math.cos(ann_a) * pixel_r * 0.5 + 4,
@@ -459,10 +459,10 @@ local function hs_draw(cx, cy, sim_r)
 
     -- Ground line
     local ground_y = cy + sim_r * 0.35
-    love.graphics.setColor(1, 1, 1, 0.08)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.setLineWidth(1)
     love.graphics.line(cx - sim_r, ground_y, cx + sim_r, ground_y)
-    love.graphics.setColor(1, 1, 1, 0.03)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.rectangle("fill", cx - sim_r, ground_y, sim_r * 2, sim_r * 0.5)
 
     -- Head contact point
@@ -502,12 +502,12 @@ local function hs_draw(cx, cy, sim_r)
     end
 
     -- Vertical reference line (ideal axis)
-    love.graphics.setColor(1, 1, 1, 0.1)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setLineWidth(1)
     local vert_top = head_y - body_pixel_h * 1.05
     love.graphics.line(head_x, head_y, head_x, vert_top)
     love.graphics.setFont(fonts.small)
-    love.graphics.setColor(1, 1, 1, 0.2)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.print("vertical", head_x + 4, vert_top)
 
     -- Tilt angle arc
@@ -614,7 +614,7 @@ local function hs_draw(cx, cy, sim_r)
     end
 
     -- Contact point indicator
-    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(fonts.small)
     love.graphics.print("contact", head_x - 42, ground_y + 4)
 
@@ -639,7 +639,7 @@ local function drawTabs(x, y, w)
         if is_active then
             love.graphics.setColor(Theme.colors.bboy[1], Theme.colors.bboy[2], Theme.colors.bboy[3], 0.12)
         else
-            love.graphics.setColor(1, 1, 1, 0.03)
+            love.graphics.setColor(unpack(Theme.colors.border))
         end
         Theme.roundRect("fill", tx + 2, y, tab_w - 4, tab_h, Theme.radius.sm)
 
@@ -647,7 +647,7 @@ local function drawTabs(x, y, w)
         if is_active then
             love.graphics.setColor(Theme.colors.bboy[1], Theme.colors.bboy[2], Theme.colors.bboy[3], 0.4)
         else
-            love.graphics.setColor(1, 1, 1, 0.06)
+            love.graphics.setColor(unpack(Theme.colors.border))
         end
         Theme.roundRect("line", tx + 2, y, tab_w - 4, tab_h, Theme.radius.sm)
 
@@ -656,14 +656,14 @@ local function drawTabs(x, y, w)
         if is_active then
             love.graphics.setColor(Theme.colors.bboy[1], Theme.colors.bboy[2], Theme.colors.bboy[3], 1)
         else
-            love.graphics.setColor(1, 1, 1, 0.4)
+            love.graphics.setColor(unpack(Theme.colors.text_dim))
         end
         local tw = fonts.body:getWidth(name)
         love.graphics.print(name, tx + (tab_w - tw) / 2, y + (tab_h - fonts.body:getHeight()) / 2)
 
         -- Keyboard hint
         love.graphics.setFont(fonts.small)
-        love.graphics.setColor(1, 1, 1, 0.2)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.print(tostring(i), tx + tab_w - 18, y + tab_h - 16)
     end
 
@@ -682,11 +682,11 @@ local function drawSidebar(sw, sh)
         -- WINDMILL controls
 
         -- Formula
-        love.graphics.setColor(1, 1, 1, 0.7)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(fonts.mono)
         love.graphics.print("L = I * omega", sidebar_x, y)
         y = y + 20
-        love.graphics.setColor(1, 1, 1, 0.35)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(fonts.small)
         love.graphics.print("Angular momentum is conserved.", sidebar_x, y)
         love.graphics.print("Tuck limbs -> I drops -> omega rises.", sidebar_x, y + 14)
@@ -712,7 +712,7 @@ local function drawSidebar(sw, sh)
         y = y + 160
 
         -- Educational text
-        love.graphics.setColor(1, 1, 1, 0.15)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.setFont(fonts.small)
         love.graphics.printf(
             "In a windmill, the bboy rolls on their back/shoulders while " ..
@@ -726,11 +726,11 @@ local function drawSidebar(sw, sh)
     elseif active_tab == 2 then
         -- FLARE controls
 
-        love.graphics.setColor(1, 1, 1, 0.7)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(fonts.mono)
         love.graphics.print("Fc = m*v^2/r", sidebar_x, y)
         y = y + 20
-        love.graphics.setColor(1, 1, 1, 0.35)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(fonts.small)
         love.graphics.print("Centripetal force keeps legs in orbit.", sidebar_x, y)
         love.graphics.print("Wider spread = larger r = more force.", sidebar_x, y + 14)
@@ -766,7 +766,7 @@ local function drawSidebar(sw, sh)
         })
         y = y + 180
 
-        love.graphics.setColor(1, 1, 1, 0.15)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.setFont(fonts.small)
         love.graphics.printf(
             "In a flare, the legs sweep in wide circles while the body " ..
@@ -780,11 +780,11 @@ local function drawSidebar(sw, sh)
     elseif active_tab == 3 then
         -- HEADSPIN controls
 
-        love.graphics.setColor(1, 1, 1, 0.7)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(fonts.mono)
         love.graphics.print("Omega_p = mgh/(I*omega)", sidebar_x, y)
         y = y + 20
-        love.graphics.setColor(1, 1, 1, 0.35)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(fonts.small)
         love.graphics.print("Precession trades tilt for wobble.", sidebar_x, y)
         love.graphics.print("Faster spin = slower precession = stability.", sidebar_x, y + 14)
@@ -831,7 +831,7 @@ local function drawSidebar(sw, sh)
         })
         y = y + 195
 
-        love.graphics.setColor(1, 1, 1, 0.15)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.setFont(fonts.small)
         love.graphics.printf(
             "A headspin works like a gyroscope. The spinning body resists " ..
@@ -855,7 +855,6 @@ function Section:load()
 end
 
 function Section:update(dt)
-    Widgets.beginFrame()
     time = time + dt
 
     if active_tab == 1 then
@@ -890,9 +889,9 @@ function Section:draw()
     local sim_h = sh - sim_y - 60
 
     -- Sim area background
-    love.graphics.setColor(1, 1, 1, 0.02)
+    love.graphics.setColor(unpack(Theme.colors.border))
     Theme.roundRect("fill", sim_x, sim_y, sim_w, sim_h, Theme.radius.lg)
-    love.graphics.setColor(1, 1, 1, 0.04)
+    love.graphics.setColor(unpack(Theme.colors.border))
     Theme.roundRect("line", sim_x, sim_y, sim_w, sim_h, Theme.radius.lg)
 
     -- Center of simulation area

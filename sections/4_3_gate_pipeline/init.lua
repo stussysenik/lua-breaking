@@ -416,7 +416,7 @@ function Section:drawPipelineConnector(sw, sh)
 
     -- Main connector line
     love.graphics.setLineWidth(2)
-    love.graphics.setColor(1, 1, 1, 0.06)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.line(pipeline_x_start - 30, cy, pipeline_x_end + 30, cy)
 
     -- Arrow heads between gates
@@ -425,13 +425,13 @@ function Section:drawPipelineConnector(sw, sh)
         local x2 = gate_rects[i + 1].x
         local mx = (x1 + x2) / 2
 
-        love.graphics.setColor(1, 1, 1, 0.12)
+        love.graphics.setColor(unpack(Theme.colors.border))
         -- Small chevron
         love.graphics.line(mx - 4, cy - 5, mx + 4, cy, mx - 4, cy + 5)
     end
 
     -- Entry arrow on left
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.print("FRAMES IN", pipeline_x_start - 30, cy - 22)
     Draw.arrow(pipeline_x_start - 30, cy, pipeline_x_start - 8, cy, 5, 1.5)
@@ -483,20 +483,20 @@ function Section:drawGate(i)
     local badge_y = r.y + 8
     love.graphics.setColor(glow_color[1], glow_color[2], glow_color[3], 0.25)
     love.graphics.circle("fill", badge_x + 10, badge_y + 10, 12)
-    love.graphics.setColor(1, 1, 1, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().body)
     local num_str = tostring(i)
     local nw = Theme.fonts().body:getWidth(num_str)
     love.graphics.print(num_str, badge_x + 10 - nw / 2, badge_y + 3)
 
     -- Gate name
-    love.graphics.setColor(1, 1, 1, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().heading)
     local name_w = Theme.fonts().heading:getWidth(gate.name)
     love.graphics.print(gate.name, r.x + (r.w - name_w) / 2, r.y + 30)
 
     -- Short question
-    love.graphics.setColor(1, 1, 1, 0.4)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.printf(gate.check, r.x + 8, r.y + 52, r.w - 16, "center")
 
@@ -507,7 +507,7 @@ function Section:drawGate(i)
     local bar_w = r.w - 16
 
     -- Background bar
-    love.graphics.setColor(1, 1, 1, 0.06)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.rectangle("fill", bar_x, bar_y, bar_w, bar_h, 2, 2)
 
     -- Fill bar
@@ -516,7 +516,7 @@ function Section:drawGate(i)
     love.graphics.rectangle("fill", bar_x, bar_y, fill_w, bar_h, 2, 2)
 
     -- Pass rate text
-    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().small)
     local pct_str = string.format("%.0f%%", pass_pct * 100)
     local pct_w = Theme.fonts().small:getWidth(pct_str)
@@ -592,7 +592,7 @@ function Section:drawParticles()
             love.graphics.circle("fill", p.x, p.y, p.radius)
 
             -- Bright center
-            love.graphics.setColor(1, 1, 1, p.alpha * 0.4)
+            love.graphics.setColor(unpack(Theme.colors.text_dim))
             love.graphics.circle("fill", p.x, p.y, p.radius * 0.4)
         end
     end
@@ -612,7 +612,7 @@ function Section:drawExpandedGate(idx, sw, sh)
     local panel_h = pad * 2 + num_lines * line_h + 30
 
     -- Connection line from gate to panel
-    love.graphics.setColor(1, 1, 1, 0.08)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.line(r.x + r.w / 2, r.y + r.h, panel_x + panel_w / 2, panel_y)
 
     -- Panel background
@@ -634,13 +634,13 @@ function Section:drawExpandedGate(idx, sw, sh)
     ty = ty + line_h + 4
 
     -- Question
-    love.graphics.setColor(1, 1, 1, 0.7)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().body)
     love.graphics.printf(gate.question, tx, ty, panel_w - pad * 2, "left")
     ty = ty + line_h + 6
 
     -- Thresholds header
-    love.graphics.setColor(1, 1, 1, 0.4)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.print("THRESHOLDS:", tx, ty)
     ty = ty + line_h - 4
@@ -650,7 +650,7 @@ function Section:drawExpandedGate(idx, sw, sh)
     for _, thresh in ipairs(gate.thresholds) do
         love.graphics.setColor(gc[1], gc[2], gc[3], 0.5)
         love.graphics.print("\226\128\162", tx, ty)  -- bullet
-        love.graphics.setColor(1, 1, 1, 0.6)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.print(thresh, tx + 14, ty)
         ty = ty + line_h - 4
     end
@@ -658,7 +658,7 @@ function Section:drawExpandedGate(idx, sw, sh)
     ty = ty + 6
 
     -- Logic
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.print("LOGIC:", tx, ty)
     ty = ty + 14
@@ -683,7 +683,7 @@ function Section:drawBottomBar(sw, sh)
     local stats_x = pipeline_x_start
 
     love.graphics.setFont(Theme.fonts().body)
-    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.print(
         string.format("Total frames: %d", total_spawned),
         stats_x, stats_y + 20
@@ -698,7 +698,7 @@ function Section:drawBottomBar(sw, sh)
 
     if total_spawned > 0 then
         local overall_pct = total_passed / total_spawned * 100
-        love.graphics.setColor(1, 1, 1, 0.4)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.print(
             string.format("(%.1f%% yield)", overall_pct),
             stats_x + 260, stats_y + 20
@@ -708,7 +708,7 @@ function Section:drawBottomBar(sw, sh)
     -- Teaching note in lower left
     local note_y = sh - 130
     local note_w = sw * 0.55
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.printf(
         "Each frame of video passes through all 5 validation gates sequentially. " ..
@@ -743,7 +743,7 @@ function Section:drawResearchMapping(sw, sh)
     love.graphics.print("Research Mapping", tx, ty)
     ty = ty + 28
 
-    love.graphics.setColor(1, 1, 1, 0.6)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().body)
     love.graphics.printf(
         "This visualization maps to evaluate_powermove_gates.py in the " ..
@@ -754,12 +754,12 @@ function Section:drawResearchMapping(sw, sh)
     )
     ty = ty + 68
 
-    love.graphics.setColor(1, 1, 1, 0.4)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().mono)
     love.graphics.print("experiments/evaluate_powermove_gates.py", tx, ty)
     ty = ty + 20
 
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.print("Click anywhere or press R to close", tx, ty)
 end

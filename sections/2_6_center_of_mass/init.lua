@@ -138,7 +138,7 @@ function Section:draw()
 
     -- Ground line
     local ground_y = skel.offset_y + skel.scale * 0.82
-    love.graphics.setColor(1, 1, 1, 0.08)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.setLineWidth(1)
     love.graphics.line(20, ground_y, sw * 0.62, ground_y)
 
@@ -210,7 +210,7 @@ function Section:draw()
         love.graphics.circle("fill", com.x, com.y, 8)
 
         -- Label
-        love.graphics.setColor(1, 1, 1, 0.6)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print("COM", com.x + 12, com.y - 6)
     end
@@ -239,7 +239,7 @@ function Section:drawStabilityMeter(sw, sh)
     local w = sw * 0.55
     local h = 30
 
-    love.graphics.setColor(0.06, 0.06, 0.09, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.bg_surface))
     Theme.roundRect("fill", x, y, w, h, Theme.radius.sm)
 
     -- Stability bar
@@ -254,7 +254,7 @@ function Section:drawStabilityMeter(sw, sh)
     love.graphics.rectangle("fill", x + 2, y + 2, (w - 4) * bar_val, h - 4, 2, 2)
 
     -- Label
-    love.graphics.setColor(1, 1, 1, 0.7)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().mono)
     love.graphics.print(
         is_stable and string.format("STABLE  margin: %.1f px", stability) or "UNSTABLE — COM outside support polygon",
@@ -278,7 +278,7 @@ function Section:drawSidebar(sw, sh)
     y = y + 160
 
     -- Contact toggles
-    love.graphics.setColor(1, 1, 1, 0.7)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().heading)
     love.graphics.print("Active Contacts", sidebar_x, y)
     y = y + 28
@@ -302,7 +302,7 @@ function Section:drawSidebar(sw, sh)
 
     -- Teaching note
     y = sh - 160
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.printf(
         "The center of mass (COM) must stay within the support polygon — " ..

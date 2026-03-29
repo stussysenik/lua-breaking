@@ -35,9 +35,9 @@ def compute_velocities(joints_3d: np.ndarray, fps: float) -> np.ndarray:
     return vel
 
 
-def compute_kinetic_energy(velocities: np.ndarray) -> np.ndarray:
-    """K(t) = Σ_j ||v_j(t)||². Shape: (T,)."""
-    return np.sum(velocities ** 2, axis=(1, 2))
+def compute_kinetic_energy(velocities: np.ndarray, mass: float = 1.0) -> np.ndarray:
+    """K(t) = (1/2) * m * Σ_j ||v_j(t)||². Shape: (T,)."""
+    return 0.5 * mass * np.sum(velocities ** 2, axis=(1, 2))
 
 
 def compute_compactness(joints_3d: np.ndarray) -> np.ndarray:
@@ -155,11 +155,12 @@ def export(args):
 
 
 def mu_to_grade(mu: float) -> str:
-    if mu >= 0.8:
+    """Grade thresholds match lua-breaking sections/3_3_musicality."""
+    if mu >= 0.90:
         return "S"
-    elif mu >= 0.65:
+    elif mu >= 0.75:
         return "A"
-    elif mu >= 0.5:
+    elif mu >= 0.55:
         return "B"
     elif mu >= 0.35:
         return "C"

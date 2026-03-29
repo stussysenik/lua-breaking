@@ -113,7 +113,7 @@ function Section:draw()
         local pos = skel.joints[skel.hovered_joint]
         local jx, jy = skel:toScreen(pos)
         -- Show a subtle "drag me" indicator
-        love.graphics.setColor(1, 1, 1, 0.15)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.circle("line", jx, jy, 20)
     end
 
@@ -158,7 +158,7 @@ function Section:drawSidebar(sw, sh)
         y = y + 220
     else
         -- Instructions
-        love.graphics.setColor(1, 1, 1, 0.3)
+        love.graphics.setColor(unpack(Theme.colors.text_muted))
         love.graphics.setFont(Theme.fonts().body)
         love.graphics.printf(
             "Click a joint to inspect its hierarchy.\nDrag joints to repose the skeleton.",
@@ -200,7 +200,7 @@ function Section:drawSidebar(sw, sh)
             local c = part[2]
             love.graphics.setColor(c[1], c[2], c[3], 0.7)
             love.graphics.circle("fill", sidebar_x + 8, y + 6, 5)
-            love.graphics.setColor(1, 1, 1, 0.6)
+            love.graphics.setColor(unpack(Theme.colors.text_dim))
             love.graphics.print(part[1], sidebar_x + 20, y)
             y = y + 20
         end
@@ -208,7 +208,7 @@ function Section:drawSidebar(sw, sh)
 
     -- Teaching note
     y = sh - 120
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.printf(
         "This skeleton uses the SMPL 24-joint topology, the same layout " ..

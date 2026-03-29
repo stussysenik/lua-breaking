@@ -61,7 +61,7 @@ return {
         concept = "center_of_mass",
         research_file = "experiments/components/com_tracker.py",
         section = "2_6_center_of_mass",
-        status = "stub",
+        status = "implemented",
     },
     {
         concept = "compactness",

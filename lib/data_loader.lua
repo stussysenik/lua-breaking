@@ -6,36 +6,10 @@
 --- Falls back to nil if no data file exists — sections use simulated data instead.
 
 local Vec = require("lib.vector")
+local json = require("lib.json")
 
 local DataLoader = {}
 DataLoader.__index = DataLoader
-
---- Simple JSON parser (subset — handles the export format)
---- For production, replace with a proper JSON library like lunajson
-local function parseJSON(str)
-    -- Use love.filesystem's json support if available, otherwise basic parse
-    -- This is a minimal parser for the export format
-    local ok, result = pcall(function()
-        -- Replace JSON null with Lua nil-safe value
-        str = str:gsub('"null"', '"nil"')
-
-        -- Convert JSON to Lua table literal (simplified)
-        local lua_str = str
-            :gsub('%[', '{')
-            :gsub('%]', '}')
-            :gsub('"([%w_]+)"%s*:', '["%1"]=')
-            :gsub('null', 'nil')
-            :gsub('true', 'true')
-            :gsub('false', 'false')
-
-        local fn = load("return " .. lua_str)
-        if fn then return fn() end
-        return nil
-    end)
-
-    if ok then return result end
-    return nil
-end
 
 --- Load motion data from a JSON file
 --- @param filepath string Path relative to love.filesystem save directory or project
@@ -46,7 +20,8 @@ function DataLoader.load(filepath)
         return nil
     end
 
-    local data = parseJSON(content)
+    local ok, data = pcall(json.decode, content)
+    if not ok then data = nil end
     if not data then
         print("[DataLoader] Failed to parse: " .. filepath)
         return nil

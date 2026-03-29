@@ -249,7 +249,7 @@ function Section:drawTimeline(sw, sh)
     local bar_h = 20
 
     -- Background
-    love.graphics.setColor(0.06, 0.06, 0.09, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.bg_surface))
     Theme.roundRect("fill", bar_x, bar_y - 4, bar_w, bar_h + 8, Theme.radius.sm)
 
     -- Progress
@@ -259,11 +259,11 @@ function Section:drawTimeline(sw, sh)
 
     -- Playhead
     local px = bar_x + 2 + (bar_w - 4) * progress
-    love.graphics.setColor(1, 1, 1, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.rectangle("fill", px - 1, bar_y - 4, 3, bar_h + 8, 1, 1)
 
     -- Time label
-    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().mono)
     love.graphics.print(
         string.format("%.2fs / %.2fs  [%s]", time, total_frames / fps, playing and "playing" or "paused"),
@@ -329,7 +329,7 @@ function Section:drawSidebar(sw, sh)
 
     -- Teaching note
     y = sh - 140
-    love.graphics.setColor(1, 1, 1, 0.15)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
     love.graphics.printf(
         "Joint velocity is the foundation of all motion analysis in bboy-analytics. " ..

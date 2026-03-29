@@ -136,13 +136,13 @@ function Draw.formula(text, x, y, font)
     local tw = font:getWidth(text)
     local th = font:getHeight()
     local pad = 8
-    love.graphics.setColor(0.06, 0.06, 0.10, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.formula_bg))
     Theme.roundRect("fill", x - pad, y - pad/2, tw + pad*2, th + pad, Theme.radius.sm)
-    love.graphics.setColor(1, 1, 1, 0.08)
+    love.graphics.setColor(unpack(Theme.colors.formula_border))
     Theme.roundRect("line", x - pad, y - pad/2, tw + pad*2, th + pad, Theme.radius.sm)
 
     -- Text
-    love.graphics.setColor(0.75, 0.85, 0.95, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.formula_text))
     love.graphics.print(text, x, y)
 
     love.graphics.setFont(prev_font)
@@ -184,9 +184,9 @@ function Draw.titleBar(title, layer, section_id)
     local h = 52
 
     -- Background
-    love.graphics.setColor(0.05, 0.05, 0.08, 0.95)
+    love.graphics.setColor(unpack(Theme.colors.bg_surface))
     love.graphics.rectangle("fill", 0, 0, w, h)
-    love.graphics.setColor(1, 1, 1, 0.06)
+    love.graphics.setColor(unpack(Theme.colors.border))
     love.graphics.line(0, h, w, h)
 
     -- Layer badge
@@ -194,20 +194,20 @@ function Draw.titleBar(title, layer, section_id)
     local badge_w = Draw.badge(string.upper(layer), 16, 14, layer_color)
 
     -- Section ID
-    love.graphics.setColor(1, 1, 1, 0.4)
+    love.graphics.setColor(unpack(Theme.colors.text_dim))
     love.graphics.setFont(Theme.fonts().body)
     love.graphics.print(section_id, 16 + badge_w + 12, 17)
 
     -- Title
-    love.graphics.setColor(1, 1, 1, 0.9)
+    love.graphics.setColor(unpack(Theme.colors.text))
     love.graphics.setFont(Theme.fonts().heading)
     local id_w = Theme.fonts().body:getWidth(section_id)
     love.graphics.print(title, 16 + badge_w + 12 + id_w + 12, 15)
 
     -- Back hint
-    love.graphics.setColor(1, 1, 1, 0.3)
+    love.graphics.setColor(unpack(Theme.colors.text_muted))
     love.graphics.setFont(Theme.fonts().small)
-    love.graphics.print("ESC  back to graph", w - 130, 20)
+    love.graphics.print("ESC  back to graph    T  toggle theme", w - 260, 20)
 
     return h
 end
@@ -223,21 +223,21 @@ function Draw.infoPanel(x, y, w, items)
     local h = pad * 2 + #items * line_h
 
     -- Background
-    love.graphics.setColor(0.06, 0.06, 0.09, 0.95)
+    love.graphics.setColor(unpack(Theme.colors.panel_bg))
     Theme.roundRect("fill", x, y, w, h, Theme.radius.lg)
-    love.graphics.setColor(1, 1, 1, 0.06)
+    love.graphics.setColor(unpack(Theme.colors.panel_border))
     Theme.roundRect("line", x, y, w, h, Theme.radius.lg)
 
     for i, item in ipairs(items) do
         local iy = y + pad + (i - 1) * line_h
 
         -- Label
-        love.graphics.setColor(1, 1, 1, 0.4)
+        love.graphics.setColor(unpack(Theme.colors.text_dim))
         love.graphics.setFont(Theme.fonts().small)
         love.graphics.print(item[1], x + pad, iy)
 
         -- Value
-        love.graphics.setColor(1, 1, 1, 0.9)
+        love.graphics.setColor(unpack(Theme.colors.text))
         love.graphics.setFont(Theme.fonts().body)
         local val_str = tostring(item[2])
         local val_w = Theme.fonts().body:getWidth(val_str)
