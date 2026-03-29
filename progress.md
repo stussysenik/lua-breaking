@@ -73,10 +73,32 @@ Added full theme system with:
 
 ---
 
+## 2026-03-30 — Sprint 2: Polish & Signal Sections
+
+### Contrast Fix
+- All 92 hardcoded `setColor(1,1,1,...)` calls replaced with Theme-aware tokens
+- Files touched: all 10 section init.lua files + skeleton.lua, widgets.lua, draw.lua
+- Replacement mapping: alpha 0.9+ → `text`, 0.4-0.6 → `text_dim`, 0.15-0.3 → `text_muted`, 0.06 → `border`
+
+### New Sections
+- **3.1 Beat Detection** (918 lines) — Waveform, energy envelope, onset detection, threshold slider, step-by-step toggles
+- **3.2 8D Audio Signature** (694 lines) — Interactive radar chart, 8 psychoacoustic dimensions, 4 genre presets, 3-column educational panel
+
+### Documentation
+- README.md — charm-style with badges, screenshots, bboy-analytics references
+- progress.md — build log
+- roadmap.md — 7 milestones, dependency graph
+
+### Screenshots
+- Graph view captured in light and dark modes
+
+---
+
 ## Stats
 
-- **Total Lua files:** 22
-- **Total lines of code:** ~8,500 Lua + 400 Python
-- **Sections implemented:** 10 / 24
+- **Total Lua files:** 24
+- **Total lines of code:** ~10,100 Lua + 400 Python
+- **Sections implemented:** 12 / 24
 - **Libraries:** 10 (vector, skeleton, physics, signal, draw, widgets, data_loader, json, timeline, theme)
 - **Tools:** 2 Python scripts (export, sync)
+- **Research repo:** [bboy-analytics](https://github.com/stussysenik/bboy-analytics)
