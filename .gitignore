@@ -1,0 +1,4 @@
+.superpowers/
+*.love
+.DS_Store
+data/*.json
