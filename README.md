@@ -31,6 +31,9 @@ Built to teach. Synced to research.
 
 ## Quick Start
 
+![Demo](demo.gif)
+
+
 ```bash
 # macOS
 brew install love
